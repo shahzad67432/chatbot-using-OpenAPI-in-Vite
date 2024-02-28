@@ -16,8 +16,8 @@ function Dashboard() {
             messages: [{ role: 'user', content: input }],
             max_tokens: 256,
         });
-        setResponse(output.choices[0])
-        console.log(output.choices[0])
+        setResponse(output.choices[0].message.content)
+        console.log(output.choices[0].message.content)
     };
 
     return ( 
@@ -26,7 +26,7 @@ function Dashboard() {
 
                 <div class="bg-gray-200 overflow-y-auto flex-grow p-4">
                     <div class="bg-white rounded-lg shadow-md p-4 h-64 overflow-y-auto">
-
+                        [{response}]
                     </div>
                 </div>
 
