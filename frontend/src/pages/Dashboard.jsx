@@ -2,22 +2,19 @@ import { useEffect, useState } from "react";
 import { OpenAI} from 'openai'
 
 function Dashboard() {
+
     const [input, setUserInput] = useState('')
     const [response, setResponse] = useState('')
-
-    const openAi = new OpenAI({
-        apiKey: "",
-        dangerouslyAllowBrowser: true
-    });
-
-    const fetchData = async () => {
-        const output = await openAi.chat.completions.create({
-            model: "gpt-3.5-turbo",
-            messages: [{ role: 'user', content: input }],
-            max_tokens: 256,
-        });
-        setResponse(output.choices[0].message.content)
-        console.log(output.choices[0].message.content)
+    const postReq = async () => {
+        try {
+            const apiResponse = await axios.post('http://localhost:3000/api/v1/user/education', {
+                inPut: input
+            });
+            setResponse(apiResponse.data[0].messageContent); // Assuming the response contains a field called 'messageContent'
+        } catch (error) {
+            console.error("Error fetching data:", error);
+            setResponse("Error fetching data");
+        }
     };
 
     return ( 
@@ -26,7 +23,7 @@ function Dashboard() {
 
                 <div class="bg-gray-200 overflow-y-auto flex-grow p-4">
                     <div class="bg-white rounded-lg shadow-md p-4 h-64 overflow-y-auto">
-                        [{response}]
+                        {response}
                     </div>
                 </div>
 
@@ -36,7 +33,7 @@ function Dashboard() {
                          type="text" placeholder="Ten programming languagues" onChange={(e)=>{
                             setUserInput(e.target.value)
                         }}/>
-                        <button onClick={fetchData} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 focus:outline-none">
+                        <button onClick={postReq} class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 focus:outline-none">
                             Search
                         </button>
                     </div>

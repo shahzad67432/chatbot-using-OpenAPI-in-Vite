@@ -3,7 +3,7 @@ const { OpenAI} = require('openai');
 const apiResponse = async (input)=>{
 
     const openAi = new OpenAI({
-        apiKey: ""
+        apiKey: "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"
     });
 
     const output = await openAi.chat.completions.create({
