@@ -1,12 +1,12 @@
-const OpenAI = require('openai')
+const express = require('express');
+const app = express()
+const cors = require('cors')
+const mainRouter = require('./routes/index')
 
-const openAi = new OpenAI({
-    apiKey: "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"
-});
+app.use(cors())
+app.use(express.json())
+app.use('/api/v1', mainRouter)
 
-
-const response = async()=>{ await openAi.chat.completions.create({
-    model: "gpt-3.5-turbo",
-    messages: [{ role: 'user', content: "top ten programming languages" }]
-})};
-console.log(response.choices[0].messages.content)
+app.listen(3000, ()=>{
+    console.log("server is on port 3000")
+})
